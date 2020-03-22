@@ -21,7 +21,7 @@ follows:
 
 ### Features:
 
-Hadley Wickham's rvest package to navigate to and "screen scrape" web data from the Georgia Department of
+This program uses Hadley Wickham's rvest package to navigate to and "screen scrape" web data from the Georgia Department of
 Public Health's (GDPH) website.  In addition, since much of the demographic data provided by the GDPH is 
 in images of graphics (i.e. pie charts of the percentage of certain populations to be classified as COVID-19 positive cases),
 this program uses the tesseract package to virtually "scan" the image, and then to use optical character recognition (OCR)
