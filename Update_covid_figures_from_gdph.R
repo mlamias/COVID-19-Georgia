@@ -1,21 +1,27 @@
 ###################################################################################################################################
 #Program Copyright, 2020, Mark J. Lamias, The Stochastic Group, Inc.
 #Version 1.0 - Initial Update
-#Version 1.1- Formatted and cleaned up code
-#Last Updated:  03/22/2020 4:00 PM EDT
+#Version 1.1- Formatt and cleaned up code
+#Version 1.2- Fix typos in header
+#Last Updated:  03/22/2020 4:09 PM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 #MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
 #
 #About this Program:  This program was developed in response to the COVID-19 global pandemic.  The Georgia (USA) Department of
-#Public Health Ppblishes updated COVID-19 testing and case counts twice daily at noon and 7 pm Eastern time.  However, the
+#Public Health Publishes updated COVID-19 testing and case counts twice daily at noon and 7 pm Eastern time.  However, the
 #agtency does not publish a historical record of testing and case counts by date.  Without this historical data, it's impossible
-#to develop predictive statistics models, make forecastst of disease spread, or develop longitudinal statistical analyses. This
-#program has loaded all historical data from the Georgia Deaprtment of Public Health using the Search Results from the
+#to develop predictive statistical models, make forecastst of disease spread, or develop longitudinal statistical analyses. This
+#program has loaded all historical data from the Georgia Deaprtment of Public Health using the search results from the
 #Internet archive service "Wayback Machine - Internet Archive" (www.archive.org) and then updates this data twice a day
-#(for the noon and 7 pm figures) by scraping data from teh Georgia Department of Public Health's website.  After reading this
+#(for the noon and 7 pm figures) by scraping data from the Georgia Department of Public Health's website.  After reading this
 #data, data is updated and stored in both RDS and CSV formats.
+#
+#Frequency of Update & Uses:
+#This program will execute twice daily at 1 pm and 8 pm EDT and output files will be updated accordingly.
+#Users may use this program directly or simply use the output data that has been compiled so long as attribution is made as
+#follows:  Lamias, Mark J., The Stochastic Group, Inc. 2020.  COVID-19 Historical Data for Georgia.
 #
 #Inputs/Global Variables Set by User:
 #DATA_DIRECTORY:  A valid R pathname to the directory where this program and the existing data reside
@@ -32,7 +38,6 @@
 #All output is sent to the DATA_DIRECTORY and files are overwritten.
 
 ###################################################################################################################################
-
 
 library(rvest)
 library(httr)
@@ -142,7 +147,7 @@ sex_female_pct	<- extract_pct(7, "Female ")
 sex_male_pct    <- extract_pct(8, "Male")
 sex_unknown_pct <- extract_pct(9, "Unknown")
 
-#create update record from newly imported statistics by county referencing the instance ID obtained above
+#Create update record from newly imported statistics by county referencing the instance ID obtained above
 counties <-
   data.frame(
     Instance_ID = new_instance_id,
@@ -150,7 +155,7 @@ counties <-
     Percent = counties$Cases
   )
 
-#create update record from newly imported statistics referencing the instance ID obtained above
+#Create update record from newly imported statistics referencing the instance ID obtained above
 new_record <-
   data.frame(
     Instance_ID = new_instance_id,
@@ -172,7 +177,7 @@ new_record <-
   )
 
 
-#append update records to existing dataset
+#Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_DATA, new_record)
 COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
