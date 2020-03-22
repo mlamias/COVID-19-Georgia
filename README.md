@@ -19,6 +19,14 @@ Users may use this program directly or simply use the output data that has been 
 follows:  
 > Lamias, Mark J., The Stochastic Group, Inc. 2020.  COVID-19 Historical Data for Georgia.
 
+### Features:
+
+Hadley Wickham's rvest package to navigate to and "screen scrape" web data from the Georgia Department of
+Public Health's (GDPH) website.  In addition, since much of the demographic data provided by the GDPH is 
+in images of graphics (i.e. pie charts of the percentage of certain populations to be classified as COVID-19 positive cases),
+this program uses the tesseract package to virtually "scan" the image, and then to use optical character recognition (OCR)
+to extract the relevant text containing the statistical figures.
+
 ### Inputs/Global Variables Set by User:
 * **DATA_DIRECTORY**:  A valid R pathname to the directory where this program and the existing data reside
 * **COVID_19_GEORIGA_DATA.Rds**:  The R RDS file that contains the most recent GA COVID-19 data
