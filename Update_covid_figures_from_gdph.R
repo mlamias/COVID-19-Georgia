@@ -72,7 +72,7 @@ report_date_parts <-
   as.character() %>% strsplit(split = "\\For: ") %>%
   simplify() %>%
   pluck(2) %>% strsplit(split = " <")  %>% simplify()
-
+print("Made it here")
 #Create datetime variable from date and time parts
 report_date <- report_date_parts[1] %>% as.Date(format = "%m/%d/%Y")
 report_time <-
