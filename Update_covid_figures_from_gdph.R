@@ -68,18 +68,18 @@ html <- read_html(session)
 
 #Get report date and time from page header
 report_date_parts <-
-  html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/p[1]') %>%
+  html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]') %>%
   as.character() %>% strsplit(split = "\\For: ") %>%
   simplify() %>%
   pluck(2) %>% strsplit(split = " <")  %>% simplify()
-print("Made it here")
+
 #Create datetime variable from date and time parts
 report_date <- report_date_parts[1] %>% as.Date(format = "%m/%d/%Y")
 report_time <-
   gsub("[\\(\\)]", "", regmatches(
     report_date_parts[2],
     gregexpr("\\(.*?\\)", report_date_parts[2])
-  )[[1]])
+  )[[1]])[1]
 
 report_datetime_str <- paste(report_date, report_time)
 report_datetime <-
@@ -110,7 +110,7 @@ counties <-
 
 #Import the date and time the report was generated as denoted in GDPH COVID-19 footer and format variable as datetime
 report_generated_datetime <- html %>%
-  html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/p[8]/em/text()') %>%
+  html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]') %>%
   as.character() %>% strsplit(split = "\\on: ") %>%
   simplify() %>%
   pluck(2)
@@ -175,7 +175,6 @@ new_record <-
     commercial_total_tests,
     gphl_total_tests
   )
-
 
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
