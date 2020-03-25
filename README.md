@@ -43,6 +43,12 @@ All output is sent to the DATA_DIRECTORY and files are overwritten.
 
 Note that the COVID_19_GEORIGA_COUNTIES_DATA data files may be joined to the COVID_19_GEORIGA_DATA data file on Instance ID to obtain additional details associated with each county case counts.
 
+The CSV files are comma separated values datasets.  They can be opened in any text editor or in MS Excel.  The RDS files such as COVID_19_GEORIGA_DATA.Rds can be read into R using synatx such as:
+> readRDS(file = "COVID_19_GEORIGA_DATA.Rds"))
+
+Assuming the COVID_19_GEORIGA_DATA.Rds is in the R working directory.  Otherwise, you can specify the full path to the file in the file argument of the readRDS function.
+
+
 ### Dataset Variables
 #### COVID_19_GEORGIA_DATA
 
