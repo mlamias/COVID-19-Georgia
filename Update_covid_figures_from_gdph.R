@@ -3,6 +3,7 @@
 #Version 1.0 - Initial Update
 #Version 1.1- Formatt and cleaned up code
 #Version 1.2- Fix typos in header
+#Version 1.3- Changed the method to extract demographic statistics from alt text
 #Last Updated:  03/22/2020 4:09 PM EDT
 #
 #Terms of Service
@@ -118,34 +119,37 @@ report_generated_datetime <- html %>%
 report_generated_datetime <- strptime(report_generated_datetime, "%m/%d/%Y %H:%M:%S")
 
 #Since case counts by demographics are not available in plain text, dynamically obtain the image name that displays the percentage breakdowns in a graphic
-image_name <-
+image_name_text <-
   read_html(session) %>% html_nodes('#main-content img') %>%
   magrittr::extract2(2) %>%
-  html_attr("src") %>%
+  html_attr("alt") %>%
   strsplit(split = "\\?") %>%
   simplify() %>%
   pluck(1)
 
+
+demographics <- as.numeric(str_replace(str_extract_all(image_name_text, "[0-9]+%")[[1]], "%", ""))
+
+#No Longer Used
 #Use image name to read graphic file, perofrm optical character recognition (OCR) on image and extract demographic statistics from OCR data.
-demographics <- ocr(image_name, HOCR = FALSE) %>%
-  strsplit(split = "\n@") %>%
-  pluck(1) %>%
-  strsplit(split = "\n") %>%
-  simplify()
-
-
+#demographics <- ocr(image_name, HOCR = FALSE) %>%
+#  strsplit(split = "\n@") %>%
+#  pluck(1) %>%
+#  strsplit(split = "\n") %>%
+#  simplify()
+#
 #Break up OCR stats into individaul variable components for age categories and sex
-extract_pct <- function(pos, extract_string) {
-  strsplit(demographics[pos], split = extract_string)[[1]][2] %>% str_sub(end = -2) %>% as.numeric()
-}
+#extract_pct <- function(pos, extract_string) {
+#  strsplit(demographics[pos], split = extract_string)[[1]][2] %>% str_sub(end = -2) %>% as.numeric()
+#}
 
-age_0_17_pct    <- extract_pct(2, "17")
-age_18_59_pct   <- extract_pct(3, "59 ")
-age_60_plus_pct <- extract_pct(4, "60\\+ ")
-age_unknown_pct <- extract_pct(5, "UNK ")
-sex_female_pct	<- extract_pct(7, "Female ")
-sex_male_pct    <- extract_pct(8, "Male")
-sex_unknown_pct <- extract_pct(9, "Unknown")
+age_0_17_pct    <- demographics[1]
+age_18_59_pct   <- demographics[2]
+age_60_plus_pct <- demographics[3]
+age_unknown_pct <- demographics[4]
+sex_female_pct	<- demographics[5]
+sex_male_pct    <- demographics[6]
+sex_unknown_pct <- demographics[7]
 
 #Create update record from newly imported statistics by county referencing the instance ID obtained above
 counties <-
