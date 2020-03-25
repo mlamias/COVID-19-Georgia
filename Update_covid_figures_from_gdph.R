@@ -149,7 +149,7 @@ counties <-
   data.frame(
     Instance_ID = new_instance_id,
     County = counties$County,
-    Percent = counties$Cases
+    Cases = counties$Cases
   )
 
 #Create update record from newly imported statistics referencing the instance ID obtained above
