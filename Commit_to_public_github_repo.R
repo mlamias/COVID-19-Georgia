@@ -40,4 +40,3 @@ git_upload<-function(DATA_DIRECTORY, COMMIT_MESSAGE){
   return(status_message)
   
 }
-

@@ -7,6 +7,7 @@
 #Version 1.4- Updated script to include total_hospitalizations.  This was not previously available from GA DPH
 #Version 1.5- Updated script to rename variable "Percent" to "Cases" in county data file.
 #Version 1.6- Removed tail function that resulted in script errors.  Function was only used during debuggging.
+#Version 1.7- Added github upload functionality following updates.
 #Last Updated:  03/25/2020 12:26 PM EDT
 #
 #Terms of Service
@@ -88,7 +89,6 @@ report_time <-
 report_datetime_str <- paste(report_date, report_time)
 report_datetime <-
   strptime(report_datetime_str, "%Y-%m-%d %I:%M %p")
-
 
 #Read in first and second table which define test/case counts by lab type
 cases_table <-
@@ -204,3 +204,6 @@ write.csv(
   row.names = FALSE
 )
 
+#Upload revised data to public github repository
+source(paste0(DATA_DIRECTORY, "/Commit_to_public_github_repo.R"))
+git_upload(DATA_DIRECTORY, paste0("Update for ", strftime(report_datetime_str, "%Y-%m-%d %H%p")))
