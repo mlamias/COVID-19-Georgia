@@ -5,7 +5,8 @@
 #Version 1.2- Fix typos in header
 #Version 1.3- Changed the method to extract demographic statistics from alt text
 #Version 1.4- Updated script to include total_hospitalizations.  This was not previously available from GA DPH
-#Last Updated:  03/24/2020 11:17 PM EDT
+#Version 1.5- Updated script to rename variable "Percent" to "Cases" in county data file.
+#Last Updated:  03/25/2020 12:26 PM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
