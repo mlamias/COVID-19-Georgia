@@ -40,3 +40,37 @@ This program outputs 4 files:
 1. An Updated COVID_19_GEORIGA_COUNTIES_DATA RDS file;
 1. An Updated COVID_19_GEORIGA_COUNTIES_DATA CSV file;
 All output is sent to the DATA_DIRECTORY and files are overwritten.
+
+Note that the COVID_19_GEORIGA_COUNTIES_DATA data files may be joined to the COVID_19_GEORIGA_DATA data file on Instance ID to obtain additional details associated with each county case counts.
+
+### Dataset Variables
+#### COVID_19_GEORGIA_DATA
+
+| Variable Name  | Variable Description |
+| ------------- | ------------- |
+| Instance_ID   | The report instance.  Each separate report from GDPH corresponds to a unique (but not necessarily sequential) Instance ID.  |
+| report_datetime  | The date and time that appears at the top of each GDPH report.  Currently reports are produced twice at day at noon and 7 pm.  |
+| report_generated_datetime   | The actual date and time that the report was generated prior to posting at noon and 7.  |
+| Confirmed   | The number of confirmed COVID-19 positive cases.  |
+| Hospitalized   | The number of confirmed COVID-19 hospitalizations.  |
+| Deaths   | The number of confirmed COVID-19 related deaths.  |
+| age_0_17_pct   | The percentage of those age 0-17 years testing positive for COVID-19.  |
+| age_18_59_pct   | The percentage of those age 18-59 years testing positive for COVID-19.  |
+| age_60_plus_pct   | The percentage of those age 60+ years testing positive for COVID-19.  |
+| age_unknown_pct   | The percentage of those of uknown/unclassified age testing positive for COVID-19.  |
+| sex_female_pct   | The percentage of females testing positive for COVID-19.  |
+| sex_male_pct   | The percentage of males testing positive for COVID-19.  |
+| sex_unknown_pct   | The percentage of those of unknown/unclassified sex testing positive for COVID-19.  |
+| commercial_lab_pos   | The number of COVID-19 positive cases tested by commercial laboratories.  |
+| gphl_pos   | The number of COVID-19 positive cases tested by Georgia Public Health Laboratories.  |
+| commercial_total_tests   | The total number of COVID-19 tests carried out by commercial laboratories.	  |
+| gphl_total_tests   | The total number of COVID-19 tests carried out by Georgia Public Health Laboratories.  |
+
+#### COVID_19_GEORIGA_COUNTIES_DATA
+
+| Variable Name  | Variable Description |
+| ------------- | ------------- |
+| Instance_ID   | The report instance.  Each separate report from GDPH corresponds to a unique (but not necessarily sequential) Instance ID.  |
+| County  | County Name  |
+| Cases   | The number of COVID-19 positive cases in the given Georgia county.  |
+
