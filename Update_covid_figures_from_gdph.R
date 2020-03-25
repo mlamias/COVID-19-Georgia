@@ -6,6 +6,7 @@
 #Version 1.3- Changed the method to extract demographic statistics from alt text
 #Version 1.4- Updated script to include total_hospitalizations.  This was not previously available from GA DPH
 #Version 1.5- Updated script to rename variable "Percent" to "Cases" in county data file.
+#Version 1.6- Removed tail function that resulted in script errors.  Function was only used during debuggging.
 #Last Updated:  03/25/2020 12:26 PM EDT
 #
 #Terms of Service
@@ -178,7 +179,7 @@ new_record <-
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_DATA, new_record)
-tail(COVID_19_GEORIGA_COUNTIES_DATA_CURRENT) <-
+COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_COUNTIES_DATA, counties)
 
 #Save updated data.
