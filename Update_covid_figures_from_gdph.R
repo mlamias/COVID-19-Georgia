@@ -4,7 +4,8 @@
 #Version 1.1- Formatt and cleaned up code
 #Version 1.2- Fix typos in header
 #Version 1.3- Changed the method to extract demographic statistics from alt text
-#Last Updated:  03/22/2020 4:09 PM EDT
+#Version 1.4- Updated script to include total_hospitalizations.  This was not previously available from GA DPH
+#Last Updated:  03/24/2020 11:17 PM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -93,11 +94,16 @@ cases_table <-
 lab_table <-
   html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[2]') %>% html_table() %>% pluck(1)
 
+#Function to extract case totals
+extract_totals<-function(statistic){
+  cases_table[cases_table$`COVID-19 Confirmed Cases`==statistic,2] %>% strsplit("\\(") %>% simplify() %>% pluck(1) %>% as.numeric()
+}
+
+
 #Store total cases and total deaths
-total_cases <-
-  strsplit(cases_table[1, 2], " ") %>% simplify() %>% pluck(1) %>% as.numeric()
-total_deaths <-
-  strsplit(cases_table[2, 2], " ") %>% simplify() %>% pluck(1) %>% as.numeric()
+total_cases <- extract_totals("Total")
+total_hospitalized <- extract_totals("Hospitalized")
+total_deaths <- extract_totals("Deaths")
 
 #Break out test/case counts into individual variables
 commercial_lab_pos          <- lab_table[1, 2]
@@ -127,21 +133,8 @@ image_name_text <-
   simplify() %>%
   pluck(1)
 
-
+#Extract Demographic Percentage Statistics into a vector
 demographics <- as.numeric(str_replace(str_extract_all(image_name_text, "[0-9]+%")[[1]], "%", ""))
-
-#No Longer Used
-#Use image name to read graphic file, perofrm optical character recognition (OCR) on image and extract demographic statistics from OCR data.
-#demographics <- ocr(image_name, HOCR = FALSE) %>%
-#  strsplit(split = "\n@") %>%
-#  pluck(1) %>%
-#  strsplit(split = "\n") %>%
-#  simplify()
-#
-#Break up OCR stats into individaul variable components for age categories and sex
-#extract_pct <- function(pos, extract_string) {
-#  strsplit(demographics[pos], split = extract_string)[[1]][2] %>% str_sub(end = -2) %>% as.numeric()
-#}
 
 age_0_17_pct    <- demographics[1]
 age_18_59_pct   <- demographics[2]
@@ -166,6 +159,7 @@ new_record <-
     report_datetime,
     report_generated_datetime,
     Confirmed = total_cases,
+    Hospitalized = total_hospitalized,
     Deaths = total_deaths,
     age_0_17_pct,
     age_18_59_pct,
@@ -183,7 +177,7 @@ new_record <-
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_DATA, new_record)
-COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
+tail(COVID_19_GEORIGA_COUNTIES_DATA_CURRENT) <-
   rbind(COVID_19_GEORIGA_COUNTIES_DATA, counties)
 
 #Save updated data.
@@ -207,3 +201,4 @@ write.csv(
   file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.csv"),
   row.names = FALSE
 )
+
