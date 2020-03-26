@@ -8,6 +8,7 @@
 #Version 1.5- Updated script to rename variable "Percent" to "Cases" in county data file.
 #Version 1.6- Removed tail function that resulted in script errors.  Function was only used during debuggging.
 #Version 1.7- Added github upload functionality following updates.
+#Version 1.8- Fixed problem associated with github commit messages and time formatting
 #Last Updated:  03/25/2020 12:26 PM EDT
 #
 #Terms of Service
@@ -206,4 +207,9 @@ write.csv(
 
 #Upload revised data to public github repository
 source(paste0(DATA_DIRECTORY, "/Commit_to_public_github_repo.R"))
-git_upload(DATA_DIRECTORY, paste0("Update for ", strftime(report_datetime_str, "%Y-%m-%d %H%p")))
+git_upload(DATA_DIRECTORY, paste0("Update for ", str_replace(strftime("2020-03-25 12:00:00 EDT", "%Y-%m-%d %I%p"), " 0", " ")))
+
+
+
+
+       
