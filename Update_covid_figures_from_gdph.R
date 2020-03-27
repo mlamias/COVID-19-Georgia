@@ -207,7 +207,7 @@ write.csv(
 
 #Upload revised data to public github repository
 source(paste0(DATA_DIRECTORY, "/Commit_to_public_github_repo.R"))
-git_upload(DATA_DIRECTORY, paste0("Update for ", str_replace(strftime("2020-03-25 12:00:00 EDT", "%Y-%m-%d %I%p"), " 0", " ")))
+git_upload(DATA_DIRECTORY, paste0("Update for ", str_replace(strftime(report_datetime, "%Y-%m-%d %I%p"), " 0", " ")))
 
 
 
