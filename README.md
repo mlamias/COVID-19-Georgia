@@ -80,3 +80,7 @@ Assuming the COVID_19_GEORIGA_DATA.Rds is in the R working directory.  Otherwise
 | County  | County Name  |
 | Cases   | The number of COVID-19 positive cases in the given Georgia county.  |
 
+#### MISCELLANEOUS NOTES
+
+* The GDPH COVID-19 report format changed on the evening of 3/27/2020.  This new format included deaths by county for the first time.  Previousu to the report dated 2020-03-27 18:27:51 EDT, county level deaths are not available.
+* Because of the report format change on 2020-03-27 18:27:51 EDT, a new data extraction script called Update_covid_figures_from_gdph-ReportFormatStarting2020_03_28.R is used.  Before this date, the Update_covid_figures_from_gdph.R script was used.
