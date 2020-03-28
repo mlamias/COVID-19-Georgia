@@ -1,19 +1,14 @@
 ###################################################################################################################################
 #Program Copyright, 2020, Mark J. Lamias, The Stochastic Group, Inc.
 #Version 1.0 - Initial Update
-#Version 1.1- Formatt and cleaned up code
-#Version 1.2- Fix typos in header
-#Version 1.3- Changed the method to extract demographic statistics from alt text
-#Version 1.4- Updated script to include total_hospitalizations.  This was not previously available from GA DPH
-#Version 1.5- Updated script to rename variable "Percent" to "Cases" in county data file.
-#Version 1.6- Removed tail function that resulted in script errors.  Function was only used during debuggging.
-#Version 1.7- Added github upload functionality following updates.
-#Version 1.8- Fixed problem associated with github commit messages and time formatting
-#Last Updated:  03/25/2020 12:26 PM EDT
+#Last Updated:  03/28/2020 03:49 AM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 #MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+#
+#BACKGROUND NOTE:  This program was created after the GDPH COVID-19 report format change was implemented on 
+#March 27, 2020.  Previous to this change, the script Update_covid_figures_from_gdph.R was used.  
 #
 #About this Program:  This program was developed in response to the COVID-19 global pandemic.  The Georgia (USA) Department of
 #Public Health Publishes updated COVID-19 testing and case counts twice daily at noon and 7 pm Eastern time.  However, the
@@ -188,8 +183,14 @@ new_record <-
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_DATA, new_record)
+tail(COVID_19_GEORIGA_DATA)
+tail(COVID_19_GEORIGA_DATA_CURRENT)
+
+
 COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_COUNTIES_DATA, counties)
+tail(COVID_19_GEORIGA_COUNTIES_DATA_CURRENT)
+tail(COVID_19_GEORIGA_COUNTIES_DATA)
 
 #Save updated data.
 saveRDS(
@@ -215,7 +216,7 @@ write.csv(
 
 #Upload revised data to public github repository
 source(paste0(DATA_DIRECTORY, "/Commit_to_public_github_repo.R"))
-git_upload(DATA_DIRECTORY, paste0("Update for ", str_replace(strftime(report_datetime, "%Y-%m-%d %I%p"), " 0", " ")))
+git_upload(DATA_DIRECTORY, paste0("Update for ", report_datetime))
 
 
 
