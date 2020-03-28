@@ -58,6 +58,7 @@ DATA_DIRECTORY <- "D:/Code/Github/COVID-19-Georgia"
 #Import historical GDPH COVID-19 Data and Import historical GDPH COVID-19 Data for counties
 COVID_19_GEORIGA_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DATA.Rds"))
 COVID_19_GEORIGA_COUNTIES_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.Rds"))
+
 #Create a report instance ID to differentiate reports from one another
 new_instance_id <- max(COVID_19_GEORIGA_DATA$Instance_ID) + 1
 
@@ -84,16 +85,6 @@ report_datetime_str <- paste(report_date, report_time)
 report_datetime <-
   strptime(report_datetime_str, "%Y-%m-%d %H:%M:%S")
 
-#Case Breakdown Table
-html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[1]') %>%  simplify() %>%  pluck(1) %>% html_table()
-
-#Commerical Testing vs. GPHD testing
-html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[1]') %>%  simplify() %>%  pluck(2) %>% html_table()
-
-#County Breakdown Table
-html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[2]') %>% html_table(header=TRUE) 
-
-
 #Read in first and second table which define test/case counts by lab type
 cases_table <-
   #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[1]') %>% html_table() %>% pluck(1)
@@ -101,6 +92,14 @@ cases_table <-
 lab_table <-
   #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[2]') %>% html_table() %>% pluck(1)
   html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[1]') %>%  simplify() %>%  pluck(2) %>% html_table(header=TRUE)
+
+#Obtain case counts by county
+html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[2]') %>% html_table(header=TRUE) %>%  simplify() %>%  pluck(1) ->counties
+names(counties)<-c("County", "Cases", "Deaths")
+counties$Cases=as.numeric(counties$Cases)
+counties$Deaths=as.numeric(counties$Deaths)
+#remove last line in table which is just a footnote
+counties<-counties[!grepl("patient county of residence", counties$County),]
 
 #Function to extract case totals
 extract_totals<-function(statistic){
@@ -119,10 +118,6 @@ gphl_pos                    <- lab_table[2, 2]
 commercial_total_tests      <- lab_table[1, 3]
 gphl_total_tests            <- lab_table[2, 3]
 
-#Obtain case counts by county
-counties <-
-  #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[3]') %>% html_table() %>% pluck(1)
-  html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[2]') %>% html_table(header=TRUE) 
 
 #Import the date and time the report was generated as denoted in GDPH COVID-19 footer and format variable as datetime
 report_generated_datetime <- html %>%
@@ -133,37 +128,40 @@ report_generated_datetime <- html %>%
 
 report_generated_datetime <- strptime(report_generated_datetime, "%m/%d/%Y %H:%M:%S")
 
-html %>%  html_nodes(xpath = '/html/script') %>% pluck(2) %>% as.character()
+json_text <- html %>%  html_nodes(xpath = '/html/head/script[2]/text()') %>% as_list() 
 
+json_text_vec<-strsplit(json_text[[c(1,1)]],"\n")[[1]]
+json_text_vec2 <- grep("dataPoints : [ ", json_text_vec, value = T, fixed = TRUE)
+json_text_vec2 <- gsub("dataPoints : [ ","",json_text_vec2, fixed = TRUE)
+json_text_vec2 <- gsub("\t","",json_text_vec2)
+json_text_vec2 <- gsub("\\\\","",json_text_vec2)
+json_text_vec2 <- gsub("';$","",json_text_vec2)
+json_text_vec2 <- paste0("[", gsub("^'","",json_text_vec2))
 
+library(jsonlite)
+gender_results <- fromJSON(json_text_vec2[1])
+age_results <- fromJSON(json_text_vec2[2])
 
-#Since case counts by demographics are not available in plain text, dynamically obtain the image name that displays the percentage breakdowns in a graphic
-image_name_text <-
-  read_html(session) %>% html_nodes('#main-content img') %>%
-  magrittr::extract2(2) %>%
-  html_attr("alt") %>%
-  strsplit(split = "\\?") %>%
-  simplify() %>%
-  pluck(1)
 
 #Extract Demographic Percentage Statistics into a vector
-demographics <- as.numeric(str_replace(str_extract_all(image_name_text, "[0-9]+%")[[1]], "%", ""))
-
-age_0_17_pct    <- demographics[1]
-age_18_59_pct   <- demographics[2]
-age_60_plus_pct <- demographics[3]
-age_unknown_pct <- demographics[4]
-sex_female_pct	<- demographics[5]
-sex_male_pct    <- demographics[6]
-sex_unknown_pct <- demographics[7]
+age_0_17_pct    <- age_results[1,1]
+age_18_59_pct   <- age_results[2,1]
+age_60_plus_pct <- age_results[3,1]
+age_unknown_pct <- age_results[4,1]
+sex_female_pct	<- gender_results[1,1]
+sex_male_pct    <- gender_results[2,1]
+sex_unknown_pct <- gender_results[4,1]
 
 #Create update record from newly imported statistics by county referencing the instance ID obtained above
+
 counties <-
   data.frame(
     Instance_ID = new_instance_id,
     County = counties$County,
-    Cases = counties$Cases
+    Cases = counties$Cases,
+    Deaths = counties$Deaths
   )
+
 
 #Create update record from newly imported statistics referencing the instance ID obtained above
 new_record <-
@@ -222,4 +220,5 @@ git_upload(DATA_DIRECTORY, paste0("Update for ", str_replace(strftime(report_dat
 
 
 
+       
        
