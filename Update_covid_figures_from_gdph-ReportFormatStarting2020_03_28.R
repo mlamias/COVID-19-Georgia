@@ -1,7 +1,9 @@
 ###################################################################################################################################
 #Program Copyright, 2020, Mark J. Lamias, The Stochastic Group, Inc.
 #Version 1.0 - Initial Update
-#Last Updated:  03/28/2020 03:49 AM EDT
+#Version 2.0 - Modified code to account for site changes implemented by GDPH on 3/28/2020 (evening) which 
+#              included new table of death by age, county, gender, and presence of underlying medical condition.
+#Last Updated:  03/29/2020 02:01 AM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -83,13 +85,16 @@ report_datetime <-
 #Read in first and second table which define test/case counts by lab type
 cases_table <-
   #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[1]') %>% html_table() %>% pluck(1)
-  html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[1]') %>%  simplify() %>%  pluck(1) %>% html_table(header=TRUE)
+  html %>%  html_nodes(xpath = '//*[@id="summary"]/table[1]') %>%  simplify() %>%  pluck(1) %>% html_table(header=TRUE)
+
 lab_table <-
   #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[2]') %>% html_table() %>% pluck(1)
-  html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[1]') %>%  simplify() %>%  pluck(2) %>% html_table(header=TRUE)
+  html %>%  html_nodes(xpath = '//*[@id="testing"]/table') %>%  simplify() %>%  pluck(1) %>% html_table(header=TRUE)
+
+
 
 #Obtain case counts by county
-html %>%  html_nodes(xpath = '//*[@id="cont1"]/table[2]') %>% html_table(header=TRUE) %>%  simplify() %>%  pluck(1) ->counties
+html %>%  html_nodes(xpath = '//*[@id="summary"]/table[2]') %>% html_table(header=TRUE) %>%  simplify() %>%  pluck(1) ->counties
 names(counties)<-c("County", "Cases", "Deaths")
 counties$Cases=as.numeric(counties$Cases)
 counties$Deaths=as.numeric(counties$Deaths)
@@ -145,7 +150,13 @@ age_60_plus_pct <- age_results[3,1]
 age_unknown_pct <- age_results[4,1]
 sex_female_pct	<- gender_results[1,1]
 sex_male_pct    <- gender_results[2,1]
-sex_unknown_pct <- gender_results[4,1]
+sex_unknown_pct <- gender_results[3,1]
+
+#New Table Of Individuals Deaths
+individual_deaths <- html %>%  html_nodes(xpath = '//*[@id="deaths"]/table') %>% simplify() %>%  pluck(1) %>% html_table(header=TRUE)
+individual_deaths$Instance_ID <- new_instance_id
+#Reorder columns with Instance_ID first
+new_individual_deaths <- individual_deaths %>% select(Instance_ID,  everything())
 
 #Create update record from newly imported statistics by county referencing the instance ID obtained above
 
@@ -192,6 +203,9 @@ COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
 tail(COVID_19_GEORIGA_COUNTIES_DATA_CURRENT)
 tail(COVID_19_GEORIGA_COUNTIES_DATA)
 
+COVID_19_GEORIGA_DEATHS_DATA_CURRENT<-
+  rbind(if(exists("COVID_19_GEORIGA_DEATHS_DATA")) COVID_19_GEORIGA_DEATHS_DATA, new_individual_deaths)
+  
 #Save updated data.
 saveRDS(
   COVID_19_GEORIGA_DATA_CURRENT,
@@ -200,6 +214,14 @@ saveRDS(
 saveRDS(
   COVID_19_GEORIGA_COUNTIES_DATA_CURRENT,
   file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.Rds")
+)
+saveRDS(
+  COVID_19_GEORIGA_COUNTIES_DATA_CURRENT,
+  file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.Rds")
+)
+saveRDS(
+  COVID_19_GEORIGA_DEATHS_DATA_CURRENT,
+  file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DEATHS_DATA.Rds")
 )
 
 #Save updated data in alternative CSV format
@@ -211,6 +233,11 @@ write.csv(
 write.csv(
   COVID_19_GEORIGA_COUNTIES_DATA_CURRENT,
   file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.csv"),
+  row.names = FALSE
+)
+write.csv(
+  COVID_19_GEORIGA_DEATHS_DATA_CURRENT,
+  file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DEATHS_DATA.csv"),
   row.names = FALSE
 )
 
