@@ -3,8 +3,9 @@
 #Version 1.0 - Initial Update
 #Version 2.0 - Modified code to account for site changes implemented by GDPH on 3/28/2020 (evening) which 
 #              included new table of death by age, county, gender, and presence of underlying medical condition.
-#Version 2.1 - Made efficiency improvements and improved code to accomodate minor changes to GDPH daily report 
-#Last Updated:  03/31/2020 04:00 AM EDT
+#Version 2.1 - Made efficiency improvements and improved code to accomodate minor changes to GDPH daily report
+#Version 2.2 - Added code to save copy of GDPH website to local drive.
+#Last Updated:  03/31/2020 04:08 AM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -65,10 +66,15 @@ new_instance_id <- max(COVID_19_GEORIGA_DATA$Instance_ID) + 1
 COVID_19_GEORIGA_DATA$report_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_datetime)
 COVID_19_GEORIGA_DATA$report_generated_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_generated_datetime)
 
+
 #Connect to GDPH website and read web page
 URL <- "https://d20s4vd27d0hk0.cloudfront.net/"
 session <- html_session(URL)
 html <- read_html(session)
+
+#Download & Save A Copy of GDPH Website
+save_url_name<-paste0("D:\\covid\\covid_", str_replace_all(as.character(Sys.time()), ":", "_"), ".html")
+download.file(URL, save_url_name, quiet = FALSE, mode = "w", cacheOK = FALSE)
 
 #Get report date and time from page header
 report_date_parts <-
