@@ -45,9 +45,9 @@
 library(rvest)
 library(httr)
 library(tidyverse)
-library(tesseract)
 library(stringr)
 library(readxl)
+library(git2r)
 
 #Set data directory
 DATA_DIRECTORY <- "D:/Code/Github/COVID-19-Georgia"
@@ -55,6 +55,7 @@ DATA_DIRECTORY <- "D:/Code/Github/COVID-19-Georgia"
 #Import historical GDPH COVID-19 Data and Import historical GDPH COVID-19 Data for counties
 COVID_19_GEORIGA_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DATA.Rds"))
 COVID_19_GEORIGA_COUNTIES_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.Rds"))
+COVID_19_GEORIGA_DEATHS_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DEATHS_DATA.Rds"))
 
 #Create a report instance ID to differentiate reports from one another
 new_instance_id <- max(COVID_19_GEORIGA_DATA$Instance_ID) + 1
@@ -169,6 +170,7 @@ get_demographic_stats<-function(table_name, column){
   
 }
 
+#Obtain Age and Gender Demographics
 categories <- c("0-17", "18-59", "60+", "UNK")
 demographic_var_names <- c("age_0_17_pct", "age_18_59_pct", "age_60_plus_pct", "age_unknown_pct")
 age_stats <- get_demographic_stats(age_results, categories)
@@ -179,37 +181,6 @@ demographic_var_names <- c("sex_female_pct", "sex_male_pct", "sex_unknown_pct")
 gender_stats <- get_demographic_stats(gender_results, categories)
 gender_name_vec <- setNames(gender_stats, demographic_var_names)
 
-
-# 
-# age_0_17_pct <- age_results[
-#                               toupper(trimws(age_results$"name")) == "0-17", 
-#                               toupper(trimws(names(age_results))) == "Y"
-#                             ]
-# age_18_59_pct <- age_results[
-#                               toupper(trimws(age_results$"name")) == "18-59", 
-#                               toupper(trimws(names(age_results))) == "Y"
-#                             ]
-# age_60_plus_pct <- age_results[
-#                                 toupper(trimws(age_results$"name")) == "60+", 
-#                                 toupper(trimws(names(age_results))) == "Y"
-#                               ]
-# 
-# age_unknown_pct <- age_results[
-#                                 toupper(trimws(age_results$"name")) == "UNK", 
-#                                 toupper(trimws(names(age_results))) == "Y"
-#                               ]
-# sex_female_pct <- gender_results[
-#                                 toupper(trimws(gender_results$"name")) == "FEMALE", 
-#                                 toupper(trimws(names(gender_results))) == "Y"
-#                                 ]
-# sex_male_pct <- gender_results[
-#                                 toupper(trimws(gender_results$"name")) == "MALE", 
-#                                 toupper(trimws(names(gender_results))) == "Y"
-#                               ]
-# sex_unknown_pct <- gender_results[
-#                                 toupper(trimws(gender_results$"name")) == "UNKNOWN", 
-#                                 toupper(trimws(names(gender_results))) == "Y"
-#                               ]
 
 #New Table Of Individuals Deaths and Reorder columns with Instance_ID first
 individual_deaths <- html %>%  
@@ -272,10 +243,6 @@ COVID_19_GEORIGA_DEATHS_DATA_CURRENT<-
 saveRDS(
   COVID_19_GEORIGA_DATA_CURRENT,
   file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DATA.Rds")
-)
-saveRDS(
-  COVID_19_GEORIGA_COUNTIES_DATA_CURRENT,
-  file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_COUNTIES_DATA.Rds")
 )
 saveRDS(
   COVID_19_GEORIGA_COUNTIES_DATA_CURRENT,
