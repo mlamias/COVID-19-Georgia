@@ -112,11 +112,29 @@ total_cases <- extract_totals("Total")
 total_hospitalized <- extract_totals("Hospitalized")
 total_deaths <- extract_totals("Deaths")
 
+
+
+
+
+
+
 #Break out test/case counts into individual variables
-commercial_lab_pos          <- lab_table[1, 2]
-gphl_pos                    <- lab_table[2, 2]
-commercial_total_tests      <- lab_table[1, 3]
-gphl_total_tests            <- lab_table[2, 3]
+commercial_lab_pos          <- lab_table[
+                                          toupper(trimws(lab_table$"COVID-19 Testing By Lab Type:")) == "COMMERCIAL LAB", 
+                                          toupper(trimws(names(lab_table))) == "NO. POS. TESTS"
+                                        ]
+gphl_pos                    <- lab_table[
+                                          toupper(trimws(lab_table$"COVID-19 Testing By Lab Type:")) == "GPHL", 
+                                          toupper(trimws(names(lab_table))) == "NO. POS. TESTS"
+                                        ]
+commercial_total_tests      <- lab_table[
+                                          toupper(trimws(lab_table$"COVID-19 Testing By Lab Type:")) == "COMMERCIAL LAB", 
+                                          toupper(trimws(names(lab_table))) == "TOTAL TESTS"
+                                        ]
+gphl_total_tests            <- lab_table[
+                                          toupper(trimws(lab_table$"COVID-19 Testing By Lab Type:")) == "GPHL", 
+                                          toupper(trimws(names(lab_table))) == "TOTAL TESTS"
+                                        ]
 
 
 #Import the date and time the report was generated as denoted in GDPH COVID-19 footer and format variable as datetime
@@ -139,27 +157,70 @@ json_text_vec2 <- gsub("';$","",json_text_vec2)
 json_text_vec2 <- paste0("[", gsub("^'","",json_text_vec2))
 
 library(jsonlite)
-gender_results <- fromJSON(json_text_vec2[1])
 age_results <- fromJSON(json_text_vec2[2])
-
+gender_results <- fromJSON(json_text_vec2[1])
 
 #Extract Demographic Percentage Statistics into a vector
-age_0_17_pct    <- age_results[1,1]
-age_18_59_pct   <- age_results[2,1]
-age_60_plus_pct <- age_results[3,1]
-age_unknown_pct <- age_results[4,1]
-sex_female_pct	<- gender_results[1,1]
-sex_male_pct    <- gender_results[2,1]
-sex_unknown_pct <- gender_results[3,1]
+get_demographic_stats<-function(table_name, column){
+  table_name[
+    toupper(trimws(table_name$"name")) == column, 
+    toupper(trimws(names(table_name))) == "Y"
+    ]
+  
+}
 
-#New Table Of Individuals Deaths
-individual_deaths <- html %>%  html_nodes(xpath = '//*[@id="deaths"]/table') %>% simplify() %>%  pluck(1) %>% html_table(header=TRUE)
-individual_deaths$Instance_ID <- new_instance_id
-#Reorder columns with Instance_ID first
-new_individual_deaths <- individual_deaths %>% select(Instance_ID,  everything())
+categories <- c("0-17", "18-59", "60+", "UNK")
+demographic_var_names <- c("age_0_17_pct", "age_18_59_pct", "age_60_plus_pct", "age_unknown_pct")
+age_stats <- get_demographic_stats(age_results, categories)
+age_name_vec <- setNames(age_stats, demographic_var_names)
+
+categories <- c("FEMALE", "MALE", "UNKNOWN")
+demographic_var_names <- c("sex_female_pct", "sex_male_pct", "sex_unknown_pct")
+gender_stats <- get_demographic_stats(gender_results, categories)
+gender_name_vec <- setNames(gender_stats, demographic_var_names)
+
+
+# 
+# age_0_17_pct <- age_results[
+#                               toupper(trimws(age_results$"name")) == "0-17", 
+#                               toupper(trimws(names(age_results))) == "Y"
+#                             ]
+# age_18_59_pct <- age_results[
+#                               toupper(trimws(age_results$"name")) == "18-59", 
+#                               toupper(trimws(names(age_results))) == "Y"
+#                             ]
+# age_60_plus_pct <- age_results[
+#                                 toupper(trimws(age_results$"name")) == "60+", 
+#                                 toupper(trimws(names(age_results))) == "Y"
+#                               ]
+# 
+# age_unknown_pct <- age_results[
+#                                 toupper(trimws(age_results$"name")) == "UNK", 
+#                                 toupper(trimws(names(age_results))) == "Y"
+#                               ]
+# sex_female_pct <- gender_results[
+#                                 toupper(trimws(gender_results$"name")) == "FEMALE", 
+#                                 toupper(trimws(names(gender_results))) == "Y"
+#                                 ]
+# sex_male_pct <- gender_results[
+#                                 toupper(trimws(gender_results$"name")) == "MALE", 
+#                                 toupper(trimws(names(gender_results))) == "Y"
+#                               ]
+# sex_unknown_pct <- gender_results[
+#                                 toupper(trimws(gender_results$"name")) == "UNKNOWN", 
+#                                 toupper(trimws(names(gender_results))) == "Y"
+#                               ]
+
+#New Table Of Individuals Deaths and Reorder columns with Instance_ID first
+individual_deaths <- html %>%  
+  html_nodes(xpath = '//*[@id="deaths"]/table') %>% 
+  simplify() %>%  pluck(1) %>% 
+  html_table(header=TRUE) %>% 
+  mutate(Instance_ID=new_instance_id) %>% 
+  select(Instance_ID,  everything())
+
 
 #Create update record from newly imported statistics by county referencing the instance ID obtained above
-
 counties <-
   data.frame(
     Instance_ID = new_instance_id,
@@ -178,18 +239,19 @@ new_record <-
     Confirmed = total_cases,
     Hospitalized = total_hospitalized,
     Deaths = total_deaths,
-    age_0_17_pct,
-    age_18_59_pct,
-    age_60_plus_pct,
-    age_unknown_pct,
-    sex_female_pct,
-    sex_male_pct,
-    sex_unknown_pct,
+    age_0_17_pct = age_name_vec["age_0_17_pct"],
+    age_18_59_pct = age_name_vec["age_18_59_pct"],
+    age_60_plus_pct = age_name_vec["age_60_plus_pct"],
+    age_unknown_pct = age_name_vec["age_unknown_pct"],
+    sex_female_pct = gender_name_vec["sex_female_pct"],
+    sex_male_pct = gender_name_vec["sex_male_pct"],
+    sex_unknown_pct = gender_name_vec["sex_unknown_pct"],
     commercial_lab_pos,
     gphl_pos,
     commercial_total_tests,
     gphl_total_tests
   )
+row.names(new_record) <- NULL
 
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
