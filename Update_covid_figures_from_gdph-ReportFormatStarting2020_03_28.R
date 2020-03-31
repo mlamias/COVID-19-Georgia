@@ -3,7 +3,8 @@
 #Version 1.0 - Initial Update
 #Version 2.0 - Modified code to account for site changes implemented by GDPH on 3/28/2020 (evening) which 
 #              included new table of death by age, county, gender, and presence of underlying medical condition.
-#Last Updated:  03/29/2020 02:01 AM EDT
+#Version 2.1 - Made efficiency improvements and improved code to accomodate minor changes to GDPH daily report 
+#Last Updated:  03/31/2020 04:00 AM EDT
 #
 #Terms of Service
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
