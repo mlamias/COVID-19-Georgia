@@ -1040,6 +1040,7 @@ NA,NA,"","",""
 34,44,"MALE","WARE","Yes"
 34,93,"MALE","WHITFIELD","Yes"
 34,48,"MALE","WORTH","Unk"
+<<<<<<< HEAD
 35,95,"MALE","BAKER","Unk"
 35,53,"MALE","BALDWIN","Yes"
 35,91,"FEMALE","BARROW","Yes"
@@ -1601,3 +1602,5 @@ NA,NA,"","",""
 35,75,"MALE","WARE","Yes"
 35,93,"MALE","WHITFIELD","Yes"
 35,48,"MALE","WORTH","Unk"
+=======
+>>>>>>> parent of b65ea95... Update for 2020-04-02 18:28:36
