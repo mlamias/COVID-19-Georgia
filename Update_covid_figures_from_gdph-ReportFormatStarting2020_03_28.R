@@ -5,6 +5,8 @@
 #              included new table of death by age, county, gender, and presence of underlying medical condition.
 #Version 2.1 - Made efficiency improvements and improved code to accomodate minor changes to GDPH daily report
 #Version 2.2 - Added code to save copy of GDPH website to local drive.
+#Version 2.3 - Changed 1st comparison operator in get_demographic_stats to %in% from == to account for typos on
+#              GDPH's website.
 #Last Updated:  03/31/2020 04:08 AM EDT
 #
 #Terms of Service
@@ -171,7 +173,7 @@ gender_results <- fromJSON(json_text_vec2[1])
 #Extract Demographic Percentage Statistics into a vector
 get_demographic_stats<-function(table_name, column){
   table_name[
-    toupper(trimws(table_name$"name")) == column, 
+    toupper(trimws(table_name$"name")) %in% column, 
     toupper(trimws(names(table_name))) == "Y"
     ]
   
