@@ -67,12 +67,16 @@ new_instance_id <- max(COVID_19_GEORIGA_DATA$Instance_ID) + 1
 #Convert to POSIXct format for date times to facilitate date/time handling
 COVID_19_GEORIGA_DATA$report_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_datetime)
 COVID_19_GEORIGA_DATA$report_generated_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_generated_datetime)
-
+tail(COVID_19_GEORIGA_DATA)
 
 #Connect to GDPH website and read web page
 URL <- "https://d20s4vd27d0hk0.cloudfront.net/"
+
+
+myfile<-"D:/covid/covid_2020-04-08 17_45_03.html"
+
 session <- html_session(URL)
-html <- read_html(session)
+html <- read_html(myfile)
 
 #Download & Save A Copy of GDPH Website
 save_url_name<-paste0("D:\\covid\\covid_", str_replace_all(as.character(Sys.time()), ":", "_"), ".html")
@@ -156,7 +160,7 @@ report_generated_datetime <- html %>%
 
 report_generated_datetime <- strptime(report_generated_datetime, "%m/%d/%Y %H:%M:%S")
 
-json_text <- html %>%  html_nodes(xpath = '/html/head/script[2]/text()') %>% as_list() 
+json_text <- html %>%  html_nodes(xpath = '/html/head/script[8]/text()') %>% as_list() 
 
 json_text_vec<-strsplit(json_text[[c(1,1)]],"\n")[[1]]
 json_text_vec2 <- grep("dataPoints : [ ", json_text_vec, value = T, fixed = TRUE)
@@ -169,6 +173,7 @@ json_text_vec2 <- paste0("[", gsub("^'","",json_text_vec2))
 library(jsonlite)
 age_results <- fromJSON(json_text_vec2[2])
 gender_results <- fromJSON(json_text_vec2[1])
+race_results <- fromJSON(json_text_vec2[3]) #Added on 4/13/2020 at 7PM report 
 
 #Extract Demographic Percentage Statistics into a vector
 get_demographic_stats<-function(table_name, column){
@@ -179,7 +184,7 @@ get_demographic_stats<-function(table_name, column){
   
 }
 
-#Obtain Age and Gender Demographics
+#Obtain Age, Gender, and Race Demographics
 categories <- c("0-17", "18-59", "60+", "UNK")
 demographic_var_names <- c("age_0_17_pct", "age_18_59_pct", "age_60_plus_pct", "age_unknown_pct")
 age_stats <- get_demographic_stats(age_results, categories)
@@ -189,6 +194,12 @@ categories <- c("FEMALE", "MALE", "UNKNOWN")
 demographic_var_names <- c("sex_female_pct", "sex_male_pct", "sex_unknown_pct")
 gender_stats <- get_demographic_stats(gender_results, categories)
 gender_name_vec <- setNames(gender_stats, demographic_var_names)
+
+categories <- c("BLACK", "WHITE", "OTHER", "UNKNOWN")
+demographic_var_names <- c("race_black_pct", "race_white_pct", "race_other_pct", "race_unknown_pct")
+race_stats <- get_demographic_stats(race_results, categories)
+race_name_vec <- setNames(race_stats, demographic_var_names)
+
 
 
 #New Table Of Individuals Deaths and Reorder columns with Instance_ID first
@@ -226,12 +237,19 @@ new_record <-
     sex_female_pct = gender_name_vec["sex_female_pct"],
     sex_male_pct = gender_name_vec["sex_male_pct"],
     sex_unknown_pct = gender_name_vec["sex_unknown_pct"],
+    race_black_pct = race_name_vec["race_black_pct"],
+    race_white_pct = race_name_vec["race_white_pct"],
+    race_other_pct = race_name_vec["race_other_pct"],
+    race_unknown_pct = race_name_vec["race_unknown_pct"],
     commercial_lab_pos,
     gphl_pos,
     commercial_total_tests,
     gphl_total_tests
   )
 row.names(new_record) <- NULL
+str(new_record)
+
+COVID_19_GEORIGA_DATA %>% mutate(race_black_pct=0.00, race_white_pct=0.00, race_other_pct=0.00, race_unknown_pct=0.00)
 
 #Append update records to existing dataset
 COVID_19_GEORIGA_DATA_CURRENT <-
