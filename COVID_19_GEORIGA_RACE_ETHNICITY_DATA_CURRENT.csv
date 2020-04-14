@@ -1,0 +1,25 @@
+"Instance_ID","Race","Ethnicity","Cases"
+50,"Black Or African American","Hispanic/Latino",15
+50,"Black Or African American","Non-Hispanic/Latino",1939
+50,"Black Or African American","Unknown",460
+50,"White","Hispanic/Latino",118
+50,"White","Non-Hispanic/Latino",1440
+50,"White","Unknown",248
+50,"American Indian/Native American","Hispanic/Latino",1
+50,"American Indian/Native American","Non-Hispanic/Latino",8
+50,"American Indian/Native American","Unknown",1
+50,"Asian","Hispanic/Latino",0
+50,"Asian","Non-Hispanic/Latino",61
+50,"Asian","Unknown",16
+50,"Multiracial","Hispanic/Latino",23
+50,"Multiracial","Non-Hispanic/Latino",2
+50,"Multiracial","Unknown",2
+50,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1
+50,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4
+50,"Native Hawaiian/Pacific Islander","Unknown",2
+50,"Other","Hispanic/Latino",104
+50,"Other","Non-Hispanic/Latino",41
+50,"Other","Unknown",25
+50,"Unknown","Hispanic/Latino",65
+50,"Unknown","Non-Hispanic/Latino",288
+50,"Unknown","Unknown",6619
