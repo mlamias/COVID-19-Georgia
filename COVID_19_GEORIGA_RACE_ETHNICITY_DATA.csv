@@ -1,97 +1,121 @@
-"Instance_ID","Race","Ethnicity","Cases"
-50,"Black Or African American","Hispanic/Latino",15
-50,"Black Or African American","Non-Hispanic/Latino",1939
-50,"Black Or African American","Unknown",460
-50,"White","Hispanic/Latino",118
-50,"White","Non-Hispanic/Latino",1440
-50,"White","Unknown",248
-50,"American Indian/Native American","Hispanic/Latino",1
-50,"American Indian/Native American","Non-Hispanic/Latino",8
-50,"American Indian/Native American","Unknown",1
-50,"Asian","Hispanic/Latino",0
-50,"Asian","Non-Hispanic/Latino",61
-50,"Asian","Unknown",16
-50,"Multiracial","Hispanic/Latino",23
-50,"Multiracial","Non-Hispanic/Latino",2
-50,"Multiracial","Unknown",2
-50,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1
-50,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4
-50,"Native Hawaiian/Pacific Islander","Unknown",2
-50,"Other","Hispanic/Latino",104
-50,"Other","Non-Hispanic/Latino",41
-50,"Other","Unknown",25
-50,"Unknown","Hispanic/Latino",65
-50,"Unknown","Non-Hispanic/Latino",288
-50,"Unknown","Unknown",6619
-51,"Black Or African American","Hispanic/Latino",16
-51,"Black Or African American","Non-Hispanic/Latino",2117
-51,"Black Or African American","Unknown",446
-51,"White","Hispanic/Latino",124
-51,"White","Non-Hispanic/Latino",1532
-51,"White","Unknown",242
-51,"American Indian/Native American","Hispanic/Latino",1
-51,"American Indian/Native American","Non-Hispanic/Latino",8
-51,"American Indian/Native American","Unknown",1
-51,"Asian","Hispanic/Latino",0
-51,"Asian","Non-Hispanic/Latino",64
-51,"Asian","Unknown",16
-51,"Multiracial","Hispanic/Latino",24
-51,"Multiracial","Non-Hispanic/Latino",2
-51,"Multiracial","Unknown",2
-51,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1
-51,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4
-51,"Native Hawaiian/Pacific Islander","Unknown",2
-51,"Other","Hispanic/Latino",115
-51,"Other","Non-Hispanic/Latino",39
-51,"Other","Unknown",25
-51,"Unknown","Hispanic/Latino",68
-51,"Unknown","Non-Hispanic/Latino",294
-51,"Unknown","Unknown",6716
-52,"Black Or African American","Hispanic/Latino",16
-52,"Black Or African American","Non-Hispanic/Latino",2149
-52,"Black Or African American","Unknown",462
-52,"White","Hispanic/Latino",126
-52,"White","Non-Hispanic/Latino",1548
-52,"White","Unknown",252
-52,"American Indian/Native American","Hispanic/Latino",1
-52,"American Indian/Native American","Non-Hispanic/Latino",8
-52,"American Indian/Native American","Unknown",1
-52,"Asian","Hispanic/Latino",0
-52,"Asian","Non-Hispanic/Latino",66
-52,"Asian","Unknown",16
-52,"Multiracial","Hispanic/Latino",25
-52,"Multiracial","Non-Hispanic/Latino",2
-52,"Multiracial","Unknown",2
-52,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1
-52,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4
-52,"Native Hawaiian/Pacific Islander","Unknown",2
-52,"Other","Hispanic/Latino",117
-52,"Other","Non-Hispanic/Latino",40
-52,"Other","Unknown",25
-52,"Unknown","Hispanic/Latino",68
-52,"Unknown","Non-Hispanic/Latino",295
-52,"Unknown","Unknown",6933
-53,"Black Or African American","Hispanic/Latino",18
-53,"Black Or African American","Non-Hispanic/Latino",2189
-53,"Black Or African American","Unknown",464
-53,"White","Hispanic/Latino",133
-53,"White","Non-Hispanic/Latino",1578
-53,"White","Unknown",256
-53,"American Indian/Native American","Hispanic/Latino",1
-53,"American Indian/Native American","Non-Hispanic/Latino",8
-53,"American Indian/Native American","Unknown",1
-53,"Asian","Hispanic/Latino",0
-53,"Asian","Non-Hispanic/Latino",69
-53,"Asian","Unknown",16
-53,"Multiracial","Hispanic/Latino",25
-53,"Multiracial","Non-Hispanic/Latino",2
-53,"Multiracial","Unknown",2
-53,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1
-53,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4
-53,"Native Hawaiian/Pacific Islander","Unknown",2
-53,"Other","Hispanic/Latino",120
-53,"Other","Non-Hispanic/Latino",40
-53,"Other","Unknown",25
-53,"Unknown","Hispanic/Latino",68
-53,"Unknown","Non-Hispanic/Latino",301
-53,"Unknown","Unknown",6938
+"Instance_ID","Race","Ethnicity","Cases","Deaths"
+50,"Black Or African American","Hispanic/Latino",15,NA
+50,"Black Or African American","Non-Hispanic/Latino",1939,NA
+50,"Black Or African American","Unknown",460,NA
+50,"White","Hispanic/Latino",118,NA
+50,"White","Non-Hispanic/Latino",1440,NA
+50,"White","Unknown",248,NA
+50,"American Indian/Native American","Hispanic/Latino",1,NA
+50,"American Indian/Native American","Non-Hispanic/Latino",8,NA
+50,"American Indian/Native American","Unknown",1,NA
+50,"Asian","Hispanic/Latino",0,NA
+50,"Asian","Non-Hispanic/Latino",61,NA
+50,"Asian","Unknown",16,NA
+50,"Multiracial","Hispanic/Latino",23,NA
+50,"Multiracial","Non-Hispanic/Latino",2,NA
+50,"Multiracial","Unknown",2,NA
+50,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1,NA
+50,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4,NA
+50,"Native Hawaiian/Pacific Islander","Unknown",2,NA
+50,"Other","Hispanic/Latino",104,NA
+50,"Other","Non-Hispanic/Latino",41,NA
+50,"Other","Unknown",25,NA
+50,"Unknown","Hispanic/Latino",65,NA
+50,"Unknown","Non-Hispanic/Latino",288,NA
+50,"Unknown","Unknown",6619,NA
+51,"Black Or African American","Hispanic/Latino",16,NA
+51,"Black Or African American","Non-Hispanic/Latino",2117,NA
+51,"Black Or African American","Unknown",446,NA
+51,"White","Hispanic/Latino",124,NA
+51,"White","Non-Hispanic/Latino",1532,NA
+51,"White","Unknown",242,NA
+51,"American Indian/Native American","Hispanic/Latino",1,NA
+51,"American Indian/Native American","Non-Hispanic/Latino",8,NA
+51,"American Indian/Native American","Unknown",1,NA
+51,"Asian","Hispanic/Latino",0,NA
+51,"Asian","Non-Hispanic/Latino",64,NA
+51,"Asian","Unknown",16,NA
+51,"Multiracial","Hispanic/Latino",24,NA
+51,"Multiracial","Non-Hispanic/Latino",2,NA
+51,"Multiracial","Unknown",2,NA
+51,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1,NA
+51,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4,NA
+51,"Native Hawaiian/Pacific Islander","Unknown",2,NA
+51,"Other","Hispanic/Latino",115,NA
+51,"Other","Non-Hispanic/Latino",39,NA
+51,"Other","Unknown",25,NA
+51,"Unknown","Hispanic/Latino",68,NA
+51,"Unknown","Non-Hispanic/Latino",294,NA
+51,"Unknown","Unknown",6716,NA
+52,"Black Or African American","Hispanic/Latino",16,NA
+52,"Black Or African American","Non-Hispanic/Latino",2149,NA
+52,"Black Or African American","Unknown",462,NA
+52,"White","Hispanic/Latino",126,NA
+52,"White","Non-Hispanic/Latino",1548,NA
+52,"White","Unknown",252,NA
+52,"American Indian/Native American","Hispanic/Latino",1,NA
+52,"American Indian/Native American","Non-Hispanic/Latino",8,NA
+52,"American Indian/Native American","Unknown",1,NA
+52,"Asian","Hispanic/Latino",0,NA
+52,"Asian","Non-Hispanic/Latino",66,NA
+52,"Asian","Unknown",16,NA
+52,"Multiracial","Hispanic/Latino",25,NA
+52,"Multiracial","Non-Hispanic/Latino",2,NA
+52,"Multiracial","Unknown",2,NA
+52,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1,NA
+52,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4,NA
+52,"Native Hawaiian/Pacific Islander","Unknown",2,NA
+52,"Other","Hispanic/Latino",117,NA
+52,"Other","Non-Hispanic/Latino",40,NA
+52,"Other","Unknown",25,NA
+52,"Unknown","Hispanic/Latino",68,NA
+52,"Unknown","Non-Hispanic/Latino",295,NA
+52,"Unknown","Unknown",6933,NA
+53,"Black Or African American","Hispanic/Latino",18,NA
+53,"Black Or African American","Non-Hispanic/Latino",2189,NA
+53,"Black Or African American","Unknown",464,NA
+53,"White","Hispanic/Latino",133,NA
+53,"White","Non-Hispanic/Latino",1578,NA
+53,"White","Unknown",256,NA
+53,"American Indian/Native American","Hispanic/Latino",1,NA
+53,"American Indian/Native American","Non-Hispanic/Latino",8,NA
+53,"American Indian/Native American","Unknown",1,NA
+53,"Asian","Hispanic/Latino",0,NA
+53,"Asian","Non-Hispanic/Latino",69,NA
+53,"Asian","Unknown",16,NA
+53,"Multiracial","Hispanic/Latino",25,NA
+53,"Multiracial","Non-Hispanic/Latino",2,NA
+53,"Multiracial","Unknown",2,NA
+53,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1,NA
+53,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",4,NA
+53,"Native Hawaiian/Pacific Islander","Unknown",2,NA
+53,"Other","Hispanic/Latino",120,NA
+53,"Other","Non-Hispanic/Latino",40,NA
+53,"Other","Unknown",25,NA
+53,"Unknown","Hispanic/Latino",68,NA
+53,"Unknown","Non-Hispanic/Latino",301,NA
+53,"Unknown","Unknown",6938,NA
+56,"Black Or African American","Hispanic/Latino",18,1
+56,"Black Or African American","Non-Hispanic/Latino",2485,233
+56,"Black Or African American","Unknown",505,10
+56,"White","Hispanic/Latino",172,8
+56,"White","Non-Hispanic/Latino",1769,166
+56,"White","Unknown",290,7
+56,"American Indian/Native American","Hispanic/Latino",1,0
+56,"American Indian/Native American","Non-Hispanic/Latino",10,1
+56,"American Indian/Native American","Unknown",1,0
+56,"Asian","Hispanic/Latino",0,0
+56,"Asian","Non-Hispanic/Latino",84,6
+56,"Asian","Unknown",18,0
+56,"Multiracial","Hispanic/Latino",30,0
+56,"Multiracial","Non-Hispanic/Latino",2,0
+56,"Multiracial","Unknown",1,0
+56,"Native Hawaiian/Pacific Islander","Hispanic/Latino",1,0
+56,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",5,0
+56,"Native Hawaiian/Pacific Islander","Unknown",2,0
+56,"Other","Hispanic/Latino",150,4
+56,"Other","Non-Hispanic/Latino",44,2
+56,"Other","Unknown",26,1
+56,"Unknown","Hispanic/Latino",77,1
+56,"Unknown","Non-Hispanic/Latino",367,11
+56,"Unknown","Unknown",7563,29
