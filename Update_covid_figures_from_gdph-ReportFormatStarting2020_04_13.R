@@ -62,19 +62,25 @@ COVID_19_GEORIGA_COUNTIES_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_
 COVID_19_GEORIGA_DEATHS_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_DEATHS_DATA.Rds"))
 COVID_19_GEORIGA_RACE_ETHNICITY_DATA <- readRDS(file = paste0(DATA_DIRECTORY, "/COVID_19_GEORIGA_RACE_ETHNICITY_DATA.Rds"))
 
+tail(COVID_19_GEORIGA_DATA)
+
 #Create a report instance ID to differentiate reports from one another
 new_instance_id <- max(COVID_19_GEORIGA_DATA$Instance_ID) + 1
+
 
 #Convert to POSIXct format for date times to facilitate date/time handling
 COVID_19_GEORIGA_DATA$report_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_datetime)
 COVID_19_GEORIGA_DATA$report_generated_datetime <- as.POSIXct(COVID_19_GEORIGA_DATA$report_generated_datetime)
-tail(COVID_19_GEORIGA_DATA)
+tail(data.frame(COVID_19_GEORIGA_DATA))
+
+
 
 #Connect to GDPH website and read web page
 URL <- "https://d20s4vd27d0hk0.cloudfront.net/"
-#myfile<-"D:/covid/covid_2020-04-12 12_45_03.html"
+#myfile<-"D:/covid/covid_2020-04-15 18_45_03.html"
 session <- html_session(URL)
 html <- read_html(URL)
+#html <- read_html(myfile)
 
 #Download & Save A Copy of GDPH Website
 save_url_name<-paste0("D:\\covid\\covid_", str_replace_all(as.character(Sys.time()), ":", "_"), ".html")
@@ -102,9 +108,6 @@ cases_table <-
 lab_table <-
   #html %>% html_nodes(xpath = '//*[@id="main-content"]/div/div[3]/div[1]/div/main/div[2]/table[2]') %>% html_table() %>% pluck(1)
   html %>%  html_nodes(xpath = '//*[@id="testing"]/table') %>%  simplify() %>%  pluck(1) %>% html_table(header=TRUE)
-
-#lab_table$`No. Pos. Tests`<-c(11811, 641)
-#lab_table$`Total Tests`<-c(50933, 3520)
 
 
 race_table <-
@@ -157,7 +160,7 @@ report_generated_datetime <- html %>%
 
 report_generated_datetime <- strptime(report_generated_datetime, "%m/%d/%Y %H:%M:%S")
 
-json_text <- html %>%  html_nodes(xpath = '/html/head/script[8]/text()') %>% as_list() 
+json_text <- html %>%  html_nodes(xpath = '/html/head/script[2]/text()') %>% as_list()
 
 json_text_vec<-strsplit(json_text[[c(1,1)]],"\n")[[1]]
 json_text_vec2 <- grep("dataPoints : [ ", json_text_vec, value = T, fixed = TRUE)
@@ -165,12 +168,17 @@ json_text_vec2 <- gsub("dataPoints : [ ","",json_text_vec2, fixed = TRUE)
 json_text_vec2 <- gsub("\t","",json_text_vec2)
 json_text_vec2 <- gsub("\\\\","",json_text_vec2)
 json_text_vec2 <- gsub("';$","",json_text_vec2)
+json_text_vec2 <- gsub(" ."," 0.",json_text_vec2, fixed=TRUE)
 json_text_vec2 <- paste0("[", gsub("^'","",json_text_vec2))
 
 library(jsonlite)
 age_results <- fromJSON(json_text_vec2[2])
 gender_results <- fromJSON(json_text_vec2[1])
-race_results <- fromJSON(json_text_vec2[3]) #Added on 4/13/2020 at 7PM report 
+#Fix gender table since GA Dept. of Health Often contains bad data.
+gender_results<-gender_results[gender_results[,1]!=0,]
+race_results <- fromJSON(json_text_vec2[3]) 
+
+
 
 #Extract Demographic Percentage Statistics into a vector
 get_demographic_stats<-function(table_name, column){
@@ -196,7 +204,6 @@ categories <- c("BLACK", "WHITE", "OTHER", "UNKNOWN")
 demographic_var_names <- c("race_black_pct", "race_white_pct", "race_other_pct", "race_unknown_pct")
 race_stats <- get_demographic_stats(race_results, categories)
 race_name_vec <- setNames(race_stats, demographic_var_names)
-
 
 
 #New Table Of Individuals Deaths and Reorder columns with Instance_ID first
@@ -254,24 +261,30 @@ COVID_19_GEORIGA_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_DATA, new_record)
 tail(COVID_19_GEORIGA_DATA)
 tail(COVID_19_GEORIGA_DATA_CURRENT)
-
+COVID_19_GEORIGA_DATA_CURRENT<-COVID_19_GEORIGA_DATA_CURRENT %>% arrange(Instance_ID, report_datetime)
 
 COVID_19_GEORIGA_COUNTIES_DATA_CURRENT <-
   rbind(COVID_19_GEORIGA_COUNTIES_DATA, counties)
 tail(COVID_19_GEORIGA_COUNTIES_DATA_CURRENT)
 tail(COVID_19_GEORIGA_COUNTIES_DATA)
+COVID_19_GEORIGA_COUNTIES_DATA_CURRENT<-COVID_19_GEORIGA_COUNTIES_DATA_CURRENT %>% arrange(Instance_ID, County)
+
 
 COVID_19_GEORIGA_DEATHS_DATA_CURRENT <-
   rbind(if(exists("COVID_19_GEORIGA_DEATHS_DATA")) COVID_19_GEORIGA_DEATHS_DATA, individual_deaths)
+tail(COVID_19_GEORIGA_DEATHS_DATA_CURRENT)
+COVID_19_GEORIGA_DEATHS_DATA_CURRENT<-COVID_19_GEORIGA_DEATHS_DATA_CURRENT %>% arrange(Instance_ID)
 
 #Add Instance_ID to race/ethnicity case counts table
 race_ethnicity_table<- 
   race_table %>% mutate(Instance_ID=new_instance_id) %>% 
   select(Instance_ID, everything())
 
+
 COVID_19_GEORIGA_RACE_ETHNICITY_DATA_CURRENT <-
   rbind(if(exists("COVID_19_GEORIGA_RACE_ETHNICITY_DATA")) COVID_19_GEORIGA_RACE_ETHNICITY_DATA, race_ethnicity_table)
 
+#COVID_19_GEORIGA_RACE_ETHNICITY_DATA_CURRENT <- COVID_19_GEORIGA_RACE_ETHNICITY_DATA_CURRENT %>% arrange(Instance_ID)
 
 #Save updated data.
 saveRDS(
