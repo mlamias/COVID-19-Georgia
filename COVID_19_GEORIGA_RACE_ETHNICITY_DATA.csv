@@ -530,3 +530,24 @@
 74,"Unknown","Hispanic/Latino",189,0
 74,"Unknown","Non-Hispanic/Latino",275,4
 74,"Unknown","Unknown",7601,24
+75,"Black Or African American","Hispanic/Latino",115,4
+75,"Black Or African American","Non-Hispanic/Latino",6271,461
+75,"Black Or African American","Unknown",1720,12
+75,"White","Hispanic/Latino",763,18
+75,"White","Non-Hispanic/Latino",4502,354
+75,"White","Unknown",959,8
+75,"American Indian/Native American","Hispanic/Latino",3,0
+75,"American Indian/Native American","Non-Hispanic/Latino",16,1
+75,"American Indian/Native American","Unknown",4,0
+75,"Asian","Hispanic/Latino",8,0
+75,"Asian","Non-Hispanic/Latino",242,14
+75,"Asian","Unknown",58,0
+75,"Native Hawaiian/Pacific Islander","Hispanic/Latino",0,0
+75,"Native Hawaiian/Pacific Islander","Non-Hispanic/Latino",3,0
+75,"Native Hawaiian/Pacific Islander","Unknown",1,0
+75,"Other","Hispanic/Latino",609,10
+75,"Other","Non-Hispanic/Latino",162,1
+75,"Other","Unknown",162,1
+75,"Unknown","Hispanic/Latino",188,0
+75,"Unknown","Non-Hispanic/Latino",273,4
+75,"Unknown","Unknown",7342,24
